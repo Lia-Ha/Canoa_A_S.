@@ -19,21 +19,16 @@ def init_session_state():
 # Configuración inicial de la página - debe estar antes de cualquier otro comando
 st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
-import streamlit as st
-
 # Menú lateral
 menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu)
-
-# Configuración inicial de la página
-st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
 # Estilo para la imagen de fondo y el superpuesto oscuro
 st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg (5).jpg");
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg%20(5).jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -50,13 +45,14 @@ st.markdown(
         z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
     }
     </style>
+    <div class="overlay"></div>
     """,
     unsafe_allow_html=True
 )
 
 # Mostrar imágenes en la barra lateral
 image_urls = {
-    "comida": "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/La Canooa.jpg",
+    "comida": "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/La%20Canooa.jpg",
     "cocina": "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/Cosineros.jpg",
     "restaurante": "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/Fondo_Restaur.jpg",
     "pulseras": "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/Pulceras_Canoa.jpg"
