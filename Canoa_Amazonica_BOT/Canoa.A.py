@@ -25,7 +25,7 @@ st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 st.markdown("""
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg (4).jpg");
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg (5).jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
