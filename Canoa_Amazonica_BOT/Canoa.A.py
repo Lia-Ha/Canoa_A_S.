@@ -22,6 +22,37 @@ init_session_state()
 menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu)
 
+# Configuración inicial de la página
+st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
+
+# Estilo para la imagen de fondo y el superpuesto oscuro
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg (5).jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;  /* Cambiar el color del texto si es necesario */
+    }
+    
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad del 50% */
+        z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
 # Mostrar imágenes en la barra lateral
 image_urls = {
     "comida": "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/La Canooa.jpg",
