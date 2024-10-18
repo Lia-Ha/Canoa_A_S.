@@ -116,6 +116,14 @@ def format_menu(menu):
     formatted_menu = [f"**{row['Plato']}**  \n{row['Descripción']}  \n**Precio:** S/{row['Precio']}" for idx, row in menu.iterrows()]
     return "\n\n".join(formatted_menu)
 
+# Función para calcular el precio total
+def calculate_total_price(order_dict, menu):
+    total_price = 0
+    for dish, quantity in order_dict.items():
+        price = menu.loc[menu['Plato'] == dish, 'Precio'].values[0]  # Obtiene el precio del plato
+        total_price += price * quantity  # Suma el precio del plato por la cantidad
+    return total_price
+
 # Cargar el menú y distritos
 menu = load_data("carta_amazonica.csv", delimiter=';', columns=["Plato", "Descripción", "Precio"])
 districts = load_data("distritos.csv", columns=["Distrito"])
@@ -159,7 +167,10 @@ elif choice == "Pedidos":
             st.session_state["district_selected"] = True
             st.session_state["current_district"] = district
             save_order_to_csv(st.session_state["current_order"], district)
-            response = f"Gracias por tu pedido desde **{district}**. ¡Tu pedido ha sido registrado con éxito! 🍽️"
+            
+            # Calcular el precio total del pedido
+            total_price = calculate_total_price(st.session_state["current_order"], menu)
+            response = f"Gracias por tu pedido desde **{district}**. ¡Tu pedido ha sido registrado con éxito! 🍽️ El total es S/{total_price:.2f}."
 
     if user_input:
         with st.chat_message("assistant", avatar="🍃"):
@@ -176,5 +187,4 @@ elif choice == "Reclamos":
         if complaint:
             st.success("Tu reclamo está en proceso. Recibirás una respuesta pronto.")
         else:
-            st.warning("Por favor, ingresa tu reclamo antes de enviar.")
-
+            st.error("Por favor, escribe tu reclamo antes de enviarlo.")
