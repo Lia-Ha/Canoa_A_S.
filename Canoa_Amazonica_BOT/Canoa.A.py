@@ -107,8 +107,7 @@ districts = load_data("distritos.csv", columns=["Distrito"])
 
 # Mostrar el contenido según la selección del menú
 if choice == "La Canoa Amazónica":
-    st.markdown("""
-    <h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h4>   
+    st.markdown("""<h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h2>
     <p style='color: white;'>Experiencia gastronómica única...</p>
     """, unsafe_allow_html=True)
 
@@ -151,7 +150,7 @@ elif choice == "Pedidos":
 
     if user_input:
         with st.chat_message("assistant", avatar="🍃"):
-            st.markdown(f"<p style='color: white;'>{response}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color: white; font-weight: bold;'>{response}</p>", unsafe_allow_html=True)
 
         st.session_state.messages.append({"role": "user", "content": user_input})
         st.session_state.messages.append({"role": "assistant", "content": response})
@@ -165,3 +164,4 @@ elif choice == "Reclamos":
             st.success("Tu reclamo está en proceso. Recibirás una respuesta pronto.")
         else:
             st.error("Por favor, escribe tu reclamo antes de enviarlo.")
+
