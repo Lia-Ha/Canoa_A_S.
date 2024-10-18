@@ -108,14 +108,14 @@ districts = load_data("distritos.csv", columns=["Distrito"])
 # Mostrar el contenido según la selección del menú
 if choice == "La Canoa Amazónica":
     st.markdown("""<h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h2>
-    <p style='color: white;'>Experiencia gastronómica única...</p>
+    <p style='color: black;'>Experiencia gastronómica única...</p>
     """, unsafe_allow_html=True)
 
 elif choice == "Ofertas":
     st.markdown("¡Promo familiar! 3 juanes a 70 soles, más una botella de 2 litros de chicha morada. Tacacho con cecina 2 por 30 soles!")
 
 elif choice == "Pedidos":
-    st.markdown("<h2 style='color: white;'>¡Descubre los Sabores de la Selva!</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: black;'>¡Descubre los Sabores de la Selva!</h2>", unsafe_allow_html=True)
 
     if st.button("Limpiar Conversación", key="clear"):
         init_session_state()
@@ -150,13 +150,13 @@ elif choice == "Pedidos":
 
     if user_input:
         with st.chat_message("assistant", avatar="🍃"):
-            st.markdown(f"<p style='color: white; font-weight: bold;'>{response}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color: black; font-weight: bold;'>{response}</p>", unsafe_allow_html=True)
 
         st.session_state.messages.append({"role": "user", "content": user_input})
         st.session_state.messages.append({"role": "assistant", "content": response})
 
 elif choice == "Reclamos":
-    st.markdown("<h2 style='color: white;'>Deja tu Reclamo</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: black;'>Deja tu Reclamo</h2>", unsafe_allow_html=True)
     complaint = st.text_area("Escribe tu reclamo aquí...")
 
     if st.button("Enviar Reclamo"):
