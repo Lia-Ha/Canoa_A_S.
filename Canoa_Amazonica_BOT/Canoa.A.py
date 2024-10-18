@@ -66,11 +66,18 @@ url_cosina_cosineros = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main
 
 # Mostrar imágenes en la barra lateral
 st.sidebar.image(url_cosina_cosineros, caption="Contamos con un equipo de expertos dedicados a ofrecerte la mejor calidad.", use_column_width=True)
+
 # URLs de las imágenes
 url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Fondo_Restaur.jpg"
 
 # Mostrar imágenes en la barra lateral debajo del menú
 st.sidebar.image(url_Restaurante_comida, caption="Cada viaje es una nueva historia por contar. Por eso cuentas con nosotros, para nuevas experiencias", use_column_width=True)
+
+# URLs de las imágenes
+url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Pulcera_Canoa.jpg"
+
+# Mostrar imágenes en la barra lateral debajo del menú
+st.sidebar.image(url_Restaurante_comida, caption="Adquiere dos pulseras de cortecia, para que la belleza de la naturaleza te acompañe día a día", use_column_width=True)
 
 if choice == "La Canoa Amazónica":
     # Mensaje de bienvenida en HTML con estilo
