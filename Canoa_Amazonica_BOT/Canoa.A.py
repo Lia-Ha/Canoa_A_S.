@@ -21,7 +21,7 @@ init_session_state()
 # Configuración inicial de la página
 st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
-# CSS para la imagen de fondo
+# CSS para la imagen de fondo y un fondo semitransparente para el texto
 st.markdown(
     """
     <style>
@@ -32,10 +32,19 @@ st.markdown(
         background-position: center;
         height: 100vh;
         padding: 20px;
-        color: white; /* Establecer color de texto blanco para mejorar la visibilidad */
+    }
+    .text-container {
+        background-color: rgba(0, 0, 0, 0.7); /* Fondo negro semitransparente */
+        padding: 20px;
+        border-radius: 10px; /* Bordes redondeados */
+        color: white; /* Color de texto blanco */
+        font-size: 18px; /* Tamaño de texto */
+        line-height: 1.5; /* Espaciado entre líneas */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejorar legibilidad */
     }
     </style>
     <div class="background">
+    <div class="text-container">
     """,
     unsafe_allow_html=True
 )
@@ -180,37 +189,41 @@ elif choice == "Pedidos":
         with st.chat_message(message["role"], avatar="🍃" if message["role"] == "assistant" else "👤"):
             st.markdown(message["content"])
 
-    # Entrada del usuario
-    user_input = st.chat_input("Escribe aquí...")
+    # Pedir al usuario que ingrese su pedido
+    prompt = st.text_input("Escribe tu pedido aquí:", value="", key="input")
 
-    # Procesar la conversación
-    if not st.session_state["order_placed"]:
-        if user_input:
-            order_dict = improved_extract_order_and_quantity(user_input, menu)
-            if st.session_state["district_selected"]:
-                district = st.session_state["current_district"]
-            else:
-                district = verify_district(user_input, districts)
-
+    if st.button("Enviar"):
+        # Validar distrito
+        if not st.session_state.district_selected:
+            district = verify_district(prompt, districts)
             if district:
-                st.session_state["district_selected"] = True
-                st.session_state["current_district"] = district
-                st.session_state.messages.append({"role": "assistant", "content": f"Perfecto, has seleccionado el distrito: {district}."})
-
-            if order_dict:
-                available_orders, unavailable_orders = verify_order_with_menu(order_dict, menu)
-                st.session_state.messages.append({"role": "user", "content": user_input})
-
-                if available_orders:
-                    order_details = "\n".join([f"{quantity} x {dish}" for dish, quantity in available_orders.items()])
-                    st.session_state.messages.append({"role": "assistant", "content": f"Tu pedido:  \n{order_details}."})
-                    st.session_state["order_placed"] = True
-                    save_order_to_csv(available_orders, district)
-                else:
-                    st.session_state.messages.append({"role": "assistant", "content": "No se encontraron platos disponibles en tu pedido."})
-
+                st.session_state.current_district = district
+                st.session_state.district_selected = True
+                st.session_state.messages.append({"role": "assistant", "content": f"¡Distrito verificado como '{district}'!"})
             else:
-                st.session_state.messages.append({"role": "assistant", "content": "No pude entender tu pedido. Intenta nuevamente."})
+                st.session_state.messages.append({"role": "assistant", "content": "Por favor, ingresa un distrito válido."})
+        else:
+            # Extraer y verificar el pedido
+            order_dict = improved_extract_order_and_quantity(prompt, menu)
+            available_orders, unavailable_orders = verify_order_with_menu(order_dict, menu)
 
-    # Fin del contenedor de fondo
-    st.markdown("</div>", unsafe_allow_html=True)
+            if available_orders:
+                st.session_state.messages.append({"role": "assistant", "content": "Aquí están los pedidos confirmados:"})
+                for dish, quantity in available_orders.items():
+                    st.session_state.messages.append({"role": "assistant", "content": f"{dish}: {quantity}"})
+                st.session_state.order_placed = True
+                save_order_to_csv(available_orders, st.session_state.current_district)
+            else:
+                st.session_state.messages.append({"role": "assistant", "content": "No se encontraron platos en el menú."})
+
+            if unavailable_orders:
+                st.session_state.messages.append({"role": "assistant", "content": f"Los siguientes platos no están disponibles: {', '.join(unavailable_orders)}."})
+
+    # Finalizar el contenedor de fondo
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+elif choice == "Reclamos":
+    st.subheader("Reclamos")
+    complaint = st.text_area("Escribe tu reclamo aquí:")
+    if st.button("Enviar Reclamo"):
+        st.success("Tu reclamo ha sido enviado. ¡Gracias por tu comentario!")
