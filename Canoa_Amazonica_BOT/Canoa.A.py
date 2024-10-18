@@ -26,7 +26,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Capturaaaaaaaaaaaaaaaaaaaaaaaaa.JPG");
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/image.JPG");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
