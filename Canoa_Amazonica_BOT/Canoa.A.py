@@ -16,10 +16,6 @@ def init_session_state():
         if key not in st.session_state:
             st.session_state[key] = default
 
-init_session_state()
-
-import streamlit as st
-
 # Configuración inicial de la página - debe estar antes de cualquier otro comando
 st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
