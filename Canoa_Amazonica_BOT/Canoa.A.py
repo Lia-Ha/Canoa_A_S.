@@ -19,20 +19,18 @@ def init_session_state():
 init_session_state()
 
 # Configuración inicial de la página
-st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoa.A:")
+st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
 # Estilo para la imagen de fondo y el superpuesto oscuro
 st.markdown(
     """
     <style>
     .stApp {
-        background-image: url('https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/image.jpg');
+        background-image: url('https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/imaagen.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         color: white;  /* Cambiar el color del texto si es necesario */
-        position: relative;
-        z-index: 0;
     }
     
     .overlay {
@@ -43,12 +41,6 @@ st.markdown(
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad del 50% */
         z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
-    }
-
-    .content {
-        position: relative;
-        z-index: 2; /* Asegura que el contenido esté por encima del overlay */
-        padding: 20px; /* Espaciado alrededor del contenido */
     }
     </style>
     """,
