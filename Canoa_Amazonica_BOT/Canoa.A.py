@@ -227,13 +227,9 @@ elif choice == "Pedidos":
         # Guardar la respuesta del asistente
         st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Mostrar mensaje final después de que se haya realizado el pedido
-if st.session_state["order_placed"] and st.session_state["district_selected"]:
-    st.success(f"¡Tu pedido ha sido confirmado y está en camino a **{st.session_state['current_district']}**!")
-else:
-    if user_input:
-        with st.chat_message("user", avatar="👤"):
-            st.markdown(user_input)
+# Entrada del usuario, asegurando que esté inicializada incluso si no se ingresa nada
+user_input = st.chat_input("Escribe aquí...") or ""
+
 # Mostrar mensaje final después de que se haya realizado el pedido
 if st.session_state["order_placed"] and st.session_state["district_selected"]:
     st.success(f"¡Tu pedido ha sido confirmado y está en camino a **{st.session_state['current_district']}**!")
