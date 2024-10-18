@@ -33,7 +33,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco_a.jpeg");
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg (5).jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -50,7 +50,6 @@ st.markdown(
         z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
     }
     </style>
-    <div class="overlay"></div>
     """,
     unsafe_allow_html=True
 )
