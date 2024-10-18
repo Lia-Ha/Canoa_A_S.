@@ -1,57 +1,38 @@
-import pandas as pd
-import streamlit as st
-from datetime import datetime
-from fuzzywuzzy import fuzz, process
-import re
+            verified_district = verify_district(user_input, districts)
 
-# Inicializar las claves de session_state si no existen
-def init_session_state():
-    session_defaults = {
-        "order_placed": False,
-        "district_selected": False,
-        "current_district": None,
-        "messages": []
-    }
-    for key, default in session_defaults.items():
-        if key not in st.session_state:
-            st.session_state[key] = default
+            if verified_district:
+                st.session_state.current_district = verified_district
+                st.session_state.district_selected = True
+                assistant_response = f"¡Perfecto! Enviaremos tu pedido a **{verified_district}**. Ahora, cuéntame, ¿qué te gustaría pedir?"
+            else:
+                assistant_response = "Lo siento, no hacemos envíos a ese distrito. Por favor, verifica el distrito o ingresa uno válido."
 
-init_session_state()
+            st.session_state.messages.append({"role": "assistant", "content": assistant_response})
 
-# Configuración inicial de la página
-st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
+            with st.chat_message("assistant", avatar="🍃"):
+                st.markdown(assistant_response)
+    else:
+        # Captura del pedido del usuario
+        if user_input := st.chat_input("Escribe tu pedido aquí:"):
+            st.session_state.messages.append({"role": "user", "content": user_input})
 
-# Estilo para la imagen de fondo y el superpuesto oscuro
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url('https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/image.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        color: white;  /* Cambiar el color del texto si es necesario */
-    }
-    
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad del 50% */
-        z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+            extracted_order = improved_extract_order_and_quantity(user_input, menu)
+            available_orders, unavailable_orders = verify_order_with_menu(extracted_order, menu)
 
-# Agregar el div del superpuesto en la parte superior
-st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
+            if available_orders:
+                assistant_response = "He entendido tu pedido:\n" + "\n".join(
+                    [f"{quantity}x {dish}" for dish, quantity in available_orders.items()]
+                )
+                save_order_to_csv(available_orders, st.session_state.current_district)
+                st.session_state.order_placed = True
+                assistant_response += f"\n\nTu pedido será enviado a **{st.session_state.current_district}**. ¡Gracias por tu preferencia!"
+            else:
+                assistant_response = "Lo siento, no he podido encontrar ningún plato en tu pedido."
 
-# URLs de las imágenes
-url_chica_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/La%20Canoaa.jpg"
+            if unavailable_orders:
+                assistant_response += "\n\nNo encontré estos platos: " + ", ".join(unavailable_orders)
 
-# Mostrar imágenes en la barra lateral
-st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", use_column_width=True)
+            st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+
+            with st.chat_message("assistant", avatar="🍃"):
+                st.markdown(assistant_response)
