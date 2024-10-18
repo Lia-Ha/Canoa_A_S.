@@ -26,7 +26,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url('https://github.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/image.jpg');
+        background-image: url('https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/imaagen.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -51,7 +51,7 @@ st.markdown(
 st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
 
 # URLs de las imágenes
-url_chica_comida = "https://github.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/La%20Canoaa.jpg"
+url_chica_comida = "https://github.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/La%20Canooa.jpg"
 
 # Mostrar imágenes en la barra lateral
 st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", use_column_width=True)
