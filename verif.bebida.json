@@ -1,1 +1,60 @@
-
+{
+    "verificacion": {
+        "estado": "confirmado",
+        "fecha": "2024-10-18",
+        "codigo_verificacion": "BEBIDA-001",
+        "responsable": "Lila Huanca"
+    },
+    "bebidas": [
+        {
+            "bebida": "Aguajina",
+            "descripcion": "Bebida refrescante elaborada con aguaje, una fruta típica de la Amazonía",
+            "precio": 10
+        },
+        {
+            "bebida": "Chapo",
+            "descripcion": "Refresco natural a base de plátano maduro, azúcar y canela",
+            "precio": 9
+        },
+        {
+            "bebida": "Masato",
+            "descripcion": "Bebida fermentada de yuca, tradicional en la Amazonía, con un sabor único",
+            "precio": 12
+        },
+        {
+            "bebida": "Refresco de Camu Camu",
+            "descripcion": "Bebida hecha con camu camu, una fruta rica en vitamina C, mezclada con agua",
+            "precio": 9.5
+        },
+        {
+            "bebida": "Sorpresa Amazónica",
+            "descripcion": "Mezcla de jugos de frutas amazónicas como guanábana y maracuyá",
+            "precio": 11.5
+        },
+        {
+            "bebida": "Bebida de Castaña",
+            "descripcion": "Refresco dulce elaborado con castaña y un toque de canela",
+            "precio": 12
+        },
+        {
+            "bebida": "Jugo de Maracuyá",
+            "descripcion": "Bebida refrescante elaborada con maracuyá, rica en sabor y nutrientes",
+            "precio": 10
+        },
+        {
+            "bebida": "Jugo de Huayo",
+            "descripcion": "Bebida refrescante a base de huayo, una fruta amazónica, dulce y aromática",
+            "precio": 10
+        },
+        {
+            "bebida": "Refresco de Pitahaya",
+            "descripcion": "Bebida hecha con jugo de pitahaya (fruta del dragón) y un toque de limón",
+            "precio": 12
+        },
+        {
+            "bebida": "Refresco de Carambola",
+            "descripcion": "Bebida refrescante hecha con jugo de carambola, conocido por su sabor dulce y ácido",
+            "precio": 10
+        }
+    ]
+}
