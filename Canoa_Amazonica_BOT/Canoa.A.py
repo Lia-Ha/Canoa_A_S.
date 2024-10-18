@@ -68,7 +68,7 @@ url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./ma
 st.sidebar.image(url_Restaurante_comida, caption="Cada viaje es una nueva historia por contar. Por eso cuentas con nosotros, para nuevas experiencias", use_column_width=True)
 
 # URLs de las imágenes
-url_cosina_cosineros = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Capturaafd.JPG"
+url_cosina_cosineros = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Capturaafdn.JPG"
 
 # Mostrar imágenes en la barra lateral
 st.sidebar.image(url_cosina_cosineros, caption="Contamos con un equipo de expertos dedicados a ofrecerte la mejor calidad. No dudes en probar nuestros platos y experimentar el auténtico sabor en cada bocado.", use_column_width=True)
