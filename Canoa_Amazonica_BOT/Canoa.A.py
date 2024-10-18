@@ -19,7 +19,7 @@ def init_session_state():
 init_session_state()
 
 # Configuración inicial de la página
-st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
+st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoa.A:")
 
 # Estilo para la imagen de fondo y el superpuesto oscuro
 st.markdown(
