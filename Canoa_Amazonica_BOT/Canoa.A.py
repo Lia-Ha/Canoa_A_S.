@@ -30,7 +30,7 @@ st.markdown(
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        color: white;
+        color: white;  /* Cambiar el color del texto si es necesario */
     }
     
     .overlay {
@@ -39,8 +39,8 @@ st.markdown(
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad del 50% */
+        z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
     }
     </style>
     """,
@@ -63,9 +63,15 @@ choice = st.sidebar.selectbox("Menú", menu)
 if choice == "La Canoa Amazónica":
     # Mensaje de bienvenida en HTML con estilo
     welcome_message = """
-    <h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h2>   
-    <p style='color: white;'>Si eres amante de la comida exótica y auténtica de nuestra querida selva...</p>
+    <h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h4>   
+    <p style='color: white;'>Si eres amante de la comida exótica y auténtica de nuestra querida selva, aquí te ofrecemos una experiencia gastronómica única que no querrás perderte.
+    En La Canoa Amazónica, vendemos una variedad de deliciosos platos de la selva, elaborados con ingredientes frescos y autóctonos que capturan la esencia de la Amazonía. Cada bocado es un viaje sensorial que te transporta a lo más profundo de la selva, donde los sabores vibrantes y las especias exóticas se fusionan para crear una explosión de gusto en tu paladar. Desde suculentas carnes, como el pez amazónico, hasta opciones vegetarianas llenas de nutrientes, tenemos algo para todos los gustos.
+    Nuestro compromiso va más allá de ofrecer comida deliciosa; también te invitamos a disfrutar de un ambiente acogedor y familiar en cualquiera de nuestras cuatro sedes en San Martín, San Isidro y Chorrillos. Aquí, recibirás una atención personalizada que te hará sentir como en casa, porque en La Canoa Amazónica, tú eres parte de nuestra familia.
+    Además de nuestro conveniente servicio de delivery, te garantizamos que cada visita será memorable. Te invitamos a sumergirte en la cultura y las tradiciones de la selva, donde cada plato cuenta una historia y cada sabor es un homenaje a la riqueza natural de nuestra región.</p>
+    
+    <p style='color: white;'>Recuerda: ¡tú eres parte de la selva, y la selva es parte de ti! Ven a disfrutar de la comida con el verdadero sabor de la Amazonía, y déjate envolver por la magia de nuestros platos. ¡Te esperamos con los brazos abiertos en La Canoa Amazónica! 🌿🍽️</p>  
     """
+    
     # Mostrar el mensaje de bienvenida
     st.markdown(welcome_message, unsafe_allow_html=True)
 
@@ -220,38 +226,27 @@ elif choice == "Pedidos":
         with st.chat_message("assistant", avatar="🍃"):
             response_html = f"<p style='color: white;'>{response}</p>"
             st.markdown(response_html, unsafe_allow_html=True)
-            st.session_state.messages.append({"role": "assistant", "content": response_html})
-        # Guardar la interacción del usuario
+
         st.session_state.messages.append({"role": "user", "content": user_input})
-        
-        # Guardar la respuesta del asistente
         st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Entrada del usuario, asegurando que esté inicializada incluso si no se ingresa nada
-user_input = st.chat_input("Escribe aquí...") or ""
+elif choice == "Reclamos":
+    # Manejo de reclamos
+    st.markdown("""
+        <h2 style='color: white;'>Deja tu Reclamo</h2> 
+    """, unsafe_allow_html=True)
 
-# Mostrar mensaje final después de que se haya realizado el pedido
-if st.session_state["order_placed"] and st.session_state["district_selected"]:
-    st.success(f"¡Tu pedido ha sido confirmado y está en camino a **{st.session_state['current_district']}**!")
-    final_message = """
-    <h2 style='color: white;'>¡Gracias por tu pedido en La Canoa Amazónica! 🌿🍽️</h2>
-    <p style='color: white;'>Tu pedido ha sido registrado correctamente y está en camino. Esperamos que disfrutes nuestros deliciosos platos de la selva amazónica.</p>
-    """
-    st.markdown(final_message, unsafe_allow_html=True)
-    
-    # Limpiar estado de sesión después de confirmar el pedido
-    if st.button("Nuevo Pedido"):
-        init_session_state()  # Reiniciar el estado de la sesión para un nuevo pedido
+    complaint = st.text_area("Escribe tu reclamo aquí...")
 
-else:
-    if user_input:
-        with st.chat_message("user", avatar="👤"):
-            st.markdown(user_input)
+    if st.button("Enviar Reclamo"):
+        if complaint:
+            response = "Tu reclamo está en proceso. Te devolveremos tu dinero en una hora al verificar la información. Si tu pedido no llegó a tiempo o fue diferente a lo que pediste, también te ofreceremos cupones por la mala experiencia de tu pedido."
+            st.success(response)
+            response_html = f"<p style='color: white;'>{response}</p>"
+            st.markdown(response_html, unsafe_allow_html=True)
+        else:
+            st.error("Por favor, escribe tu reclamo antes de enviarlo.")
 
-    # Si el pedido no está completo, mostrar el estado actual del pedido
-    if st.session_state["order_placed"] and not st.session_state["district_selected"]:
-        st.info("Esperando el nombre de tu distrito para completar el pedido...")
-
-# Finalizar con una despedida
+# Agregar mensaje de despedida en la parte inferior
 st.markdown("---")
-st.markdown("<h3 style='color: white;'>¡Gracias por visitar La Canoa Amazónica! 🌿🍽️</h3>", unsafe_allow_html=True)
+st.markdown("¡Gracias por visitar La Canoa Amazónica! 🌿🍽️")
