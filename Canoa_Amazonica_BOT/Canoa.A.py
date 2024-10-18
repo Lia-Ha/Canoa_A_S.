@@ -21,39 +21,27 @@ init_session_state()
 # Configuración inicial de la página
 st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
-# Estilo para la imagen de fondo y el superpuesto oscuro
+# CSS para la imagen de fondo
 st.markdown(
     """
     <style>
-    .stApp {
-        background-image: url('https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/imaagen.jpg');
+    .background {
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Capturaaaaaaaaaaaaaaaaaaaaaaaaa.JPG");
         background-size: cover;
-        background-position: center;
         background-repeat: no-repeat;
-        color: white;  /* Cambiar el color del texto si es necesario */
-    }
-    
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad del 50% */
-        z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
+        background-position: center;
+        height: 100vh;
+        padding: 20px;
+        color: white; /* Establecer color de texto blanco para mejorar la visibilidad */
     }
     </style>
+    <div class="background">
     """,
     unsafe_allow_html=True
 )
 
-# Agregar el div del superpuesto en la parte superior
-st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
-
-# URLs de las imágenes
-url_chica_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/La%20Canooa.jpg"
-
 # Mostrar imágenes en la barra lateral
+url_chica_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/La%20Canooa.jpg"
 st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", use_column_width=True)
 
 # Menú lateral
@@ -63,13 +51,13 @@ choice = st.sidebar.selectbox("Menú", menu)
 if choice == "La Canoa Amazónica":
     # Mensaje de bienvenida en HTML con estilo
     welcome_message = """
-    <h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h4>   
-    <p style='color: white;'>Si eres amante de la comida exótica y auténtica de nuestra querida selva, aquí te ofrecemos una experiencia gastronómica única que no querrás perderte.
+    <h2>¡Bienvenidos a La Canoa Amazónica! 🌿🍃</h2>   
+    <p>Si eres amante de la comida exótica y auténtica de nuestra querida selva, aquí te ofrecemos una experiencia gastronómica única que no querrás perderte.
     En La Canoa Amazónica, vendemos una variedad de deliciosos platos de la selva, elaborados con ingredientes frescos y autóctonos que capturan la esencia de la Amazonía. Cada bocado es un viaje sensorial que te transporta a lo más profundo de la selva, donde los sabores vibrantes y las especias exóticas se fusionan para crear una explosión de gusto en tu paladar. Desde suculentas carnes, como el pez amazónico, hasta opciones vegetarianas llenas de nutrientes, tenemos algo para todos los gustos.
     Nuestro compromiso va más allá de ofrecer comida deliciosa; también te invitamos a disfrutar de un ambiente acogedor y familiar en cualquiera de nuestras cuatro sedes en San Martín, San Isidro y Chorrillos. Aquí, recibirás una atención personalizada que te hará sentir como en casa, porque en La Canoa Amazónica, tú eres parte de nuestra familia.
     Además de nuestro conveniente servicio de delivery, te garantizamos que cada visita será memorable. Te invitamos a sumergirte en la cultura y las tradiciones de la selva, donde cada plato cuenta una historia y cada sabor es un homenaje a la riqueza natural de nuestra región.</p>
     
-    <p style='color: white;'>Recuerda: ¡tú eres parte de la selva, y la selva es parte de ti! Ven a disfrutar de la comida con el verdadero sabor de la Amazonía, y déjate envolver por la magia de nuestros platos. ¡Te esperamos con los brazos abiertos en La Canoa Amazónica! 🌿🍽️</p>  
+    <p>Recuerda: ¡tú eres parte de la selva, y la selva es parte de ti! Ven a disfrutar de la comida con el verdadero sabor de la Amazonía, y déjate envolver por la magia de nuestros platos. ¡Te esperamos con los brazos abiertos en La Canoa Amazónica! 🌿🍽️</p>  
     """
     
     # Mostrar el mensaje de bienvenida
@@ -84,9 +72,9 @@ elif choice == "Ofertas":
 elif choice == "Pedidos":
     # Mostrar mensaje de bienvenida
     intro = """
-    <h2 style='color: white;'>¡Descubre los Sabores de la Selva en La Canoa Amazónica! 🌿🍃</h2>  
-    <p style='color: white;'>Llegaste al rincón del sabor, donde la selva te recibe con sus platos más deliciosos.</p>  
-    <p style='color: white;'>¿Qué se te antoja hoy? ¡Escribe "Carta" para comenzar!</p>
+    <h2>¡Descubre los Sabores de la Selva en La Canoa Amazónica! 🌿🍃</h2>  
+    <p>Llegaste al rincón del sabor, donde la selva te recibe con sus platos más deliciosos.</p>  
+    <p>¿Qué se te antoja hoy? ¡Escribe "Carta" para comenzar!</p>
     """
     st.markdown(intro, unsafe_allow_html=True)
 
@@ -199,54 +187,30 @@ elif choice == "Pedidos":
     if not st.session_state["order_placed"]:
         if user_input:
             order_dict = improved_extract_order_and_quantity(user_input, menu)
-            if not order_dict:
-                response = "😊 ¡Selecciona un plato de la selva! Escribe la cantidad seguida del plato.\n\n"
-                response += format_menu(menu)
+            if st.session_state["district_selected"]:
+                district = st.session_state["current_district"]
             else:
-                available_orders, unavailable_orders = verify_order_with_menu(order_dict, menu)
-                if unavailable_orders:
-                    response = f"Lo siento, los siguientes platos no están disponibles: {', '.join(unavailable_orders)}."
-                else:
-                    st.session_state["order_placed"] = True
-                    st.session_state["current_order"] = available_orders
-                    response = f"<p style='color: white;'>Tu pedido ha sido registrado: {', '.join([f'{qty} x {dish}' for dish, qty in available_orders.items()])}. ¿De qué distrito nos visitas? Por favor, menciona tu distrito (por ejemplo: Miraflores).</p>"
-    else:
-        if user_input:
-            district = verify_district(user_input, districts)
-            if not district:
-                response = f"Lo siento, pero no entregamos en ese distrito. Distritos disponibles: {', '.join(districts['Distrito'].tolist())}."
-            else:
+                district = verify_district(user_input, districts)
+
+            if district:
                 st.session_state["district_selected"] = True
                 st.session_state["current_district"] = district
-                save_order_to_csv(st.session_state["current_order"], district)
-                response = f"Gracias por tu pedido desde **{district}**. ¡Tu pedido ha sido registrado con éxito! 🍽️"
+                st.session_state.messages.append({"role": "assistant", "content": f"Perfecto, has seleccionado el distrito: {district}."})
 
-    # Mostrar la respuesta del asistente
-    if user_input:
-        with st.chat_message("assistant", avatar="🍃"):
-            response_html = f"<p style='color: white;'>{response}</p>"
-            st.markdown(response_html, unsafe_allow_html=True)
+            if order_dict:
+                available_orders, unavailable_orders = verify_order_with_menu(order_dict, menu)
+                st.session_state.messages.append({"role": "user", "content": user_input})
 
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        st.session_state.messages.append({"role": "assistant", "content": response})
+                if available_orders:
+                    order_details = "\n".join([f"{quantity} x {dish}" for dish, quantity in available_orders.items()])
+                    st.session_state.messages.append({"role": "assistant", "content": f"Tu pedido:  \n{order_details}."})
+                    st.session_state["order_placed"] = True
+                    save_order_to_csv(available_orders, district)
+                else:
+                    st.session_state.messages.append({"role": "assistant", "content": "No se encontraron platos disponibles en tu pedido."})
 
-elif choice == "Reclamos":
-    # Manejo de reclamos
-    st.markdown("""
-        <h2 style='color: white;'>Deja tu Reclamo</h2> 
-    """, unsafe_allow_html=True)
+            else:
+                st.session_state.messages.append({"role": "assistant", "content": "No pude entender tu pedido. Intenta nuevamente."})
 
-    complaint = st.text_area("Escribe tu reclamo aquí...")
-
-    if st.button("Enviar Reclamo"):
-        if complaint:
-            response = "Tu reclamo está en proceso. Te devolveremos tu dinero en una hora al verificar la información. Si tu pedido no llegó a tiempo o fue diferente a lo que pediste, también te ofreceremos cupones por la mala experiencia de tu pedido."
-            st.success(response)
-            response_html = f"<p style='color: white;'>{response}</p>"
-            st.markdown(response_html, unsafe_allow_html=True)
-        else:
-            st.error("Por favor, escribe tu reclamo antes de enviarlo.")
-
-# Agregar mensaje de despedida en la parte inferior
-st.markdown("---")
-st.markdown("¡Gracias por visitar La Canoa Amazónica! 🌿🍽️")
+    # Fin del contenedor de fondo
+    st.markdown("</div>", unsafe_allow_html=True)
