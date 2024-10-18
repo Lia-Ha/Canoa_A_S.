@@ -20,12 +20,12 @@ init_session_state()
 
 import streamlit as st
 
+# Configuración inicial de la página - debe estar antes de cualquier otro comando
+st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
+
 # Menú lateral
 menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu)
-
-# Configuración inicial de la página
-st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
 
 # Estilo para la imagen de fondo y el superpuesto oscuro
 st.markdown(
