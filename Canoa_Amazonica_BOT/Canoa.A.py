@@ -74,7 +74,7 @@ url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./ma
 st.sidebar.image(url_Restaurante_comida, caption="Cada viaje es una nueva historia por contar. Por eso cuentas con nosotros, para nuevas experiencias", use_column_width=True)
 
 # URLs de las imágenes
-url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Pulcera_Canoa.jpg"
+url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Pulceras_Canoa.jpg"
 
 # Mostrar imágenes en la barra lateral debajo del menú
 st.sidebar.image(url_Restaurante_comida, caption="Adquiere dos pulseras de cortecia, para que la belleza de la naturaleza te acompañe día a día", use_column_width=True)
