@@ -102,7 +102,7 @@ def calculate_total_price(order_dict, menu):
     return total_price
 
 # Cargar el menú y distritos
-menu = load_data("carta_amazonica.csv", delimiter=';', columns=["Plato", "Descripción", "Precio"])
+menu = load_data("carta.csv", delimiter=';', columns=["Plato", "Descripción", "Precio"])
 districts = load_data("distritos.csv", columns=["Distrito"])
 
 # Mostrar el contenido según la selección del menú
