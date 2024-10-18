@@ -27,33 +27,6 @@ if st.sidebar.button("Reiniciar"):
 # Agregar el div del superpuesto en la parte superior
 st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
 
-# Menú lateral
-menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
-choice = st.sidebar.selectbox("Menú", menu)
-
-# URLs de las imágenes
-url_chica_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/La%20Canooa.jpg"
-
-# Mostrar imágenes en la barra lateral debajo del menú
-st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", use_column_width=True)
-
-# URLs de las imágenes
-url_cosina_cosineros = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Cosineros.jpg"
-
-# Mostrar imágenes en la barra lateral
-st.sidebar.image(url_cosina_cosineros, caption="Contamos con un equipo de expertos dedicados a ofrecerte la mejor calidad.", use_column_width=True)
-
-# URLs de las imágenes
-url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Fondo_Restaur.jpg"
-
-# Mostrar imágenes en la barra lateral debajo del menú
-st.sidebar.image(url_Restaurante_comida, caption="Cada viaje es una nueva historia por contar. Por eso cuentas con nosotros, para nuevas experiencias", use_column_width=True)
-
-# URLs de las imágenes
-url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Pulceras_Canoa.JPG"
-
-# Mostrar imágenes en la barra lateral debajo del menú
-st.sidebar.image(url_Restaurante_comida, caption="Adquiere dos pulseras de cortecia, para que la belleza de la naturaleza te acompañe día a día", use_column_width=True)
 
 # Mensaje de bienvenida
 if choice == "La Canoa Amazónica":
@@ -63,121 +36,63 @@ if choice == "La Canoa Amazónica":
     """
     st.markdown(welcome_message, unsafe_allow_html=True)
 
-elif choice == "Ofertas":
-    offers_message = """¡Promo familiar! 3 juanes a 70 soles, más una botella de 2 litros de chicha morada.  
-    ¡Tacacho con cecina 2 por 30 soles! ¡Super promo!"""
-    st.markdown(offers_message)
+# Cargar el menú desde un archivo CSV
+def load(file_path):
+    """Cargar el menú desde un archivo CSV con columnas Plato, Descripción y Precio."""
+    load = pd.read_csv(file_path)
+    return load
 
-elif choice == "Pedidos":
-    intro = """
-    <h2 style='color: black;'>¡Descubre los Sabores de la Selva en La Canoa Amazónica! 🌿🍃</h2>  
-    <p style='color: black;'>Llegaste al rincón del sabor, donde la selva te recibe con sus platos más deliciosos.</p>  
-    <p style='color: black;'>¿Qué se te antoja hoy? ¡Escribe "Carta" para comenzar!</p>
-    """
-    st.markdown(intro, unsafe_allow_html=True)
+def format_menu(menu):
+    if menu.empty:
+        return "No hay platos disponibles."
 
-    # Verificación de distritos
-    distritos = [
-        "Miraflores", "San Isidro", "Barranco", "La Molina", "Surco", 
-        "San Borja", "Pueblo Libre", "Lince", "Chorrillos", "San Miguel", 
-        "Magdalena del Mar", "Callao", "Rímac", "Carabayllo", "Villa El Salvador"
-    ]
+    else:
+        # Encabezados de la tabla
+        table = "| **Plato** | **Descripción** | **Precio** |\n"
+        table += "|-----------|-----------------|-------------|\n"  # Línea de separación
+        
+        # Filas de la tabla
+        for idx, row in menu.iterrows():
+            table += f"| {row['Plato']} | {row['Descripción']} | S/{row['Precio']:.2f} |\n"
+        
+        return table
 
-    st.subheader("Verifica tu distrito")
-    selected_district = st.selectbox("Selecciona tu distrito", distritos)
-    
-    if st.button("Verificar Distrito"):
-        verification_district = {
-            "verificacion": {
-                "estado": "confirmado",
-                "fecha": datetime.now().strftime("%Y-%m-%d"),
-                "codigo_verificacion": "DISTRITO-001",
-                "responsable": "Lila Huanca"
-            },
-            "distrito": selected_district
-        }
-        # Guardar verificación en un archivo JSON
-        with open("verif.distrito.json", "w") as f:
-            json.dump(verification_district, f)
-        st.success(f"Distrito verificado: {selected_district}")
 
-    # Verificación de bebidas
-    bebidas = [
-        {"bebida": "Aguajina", "descripcion": "Bebida refrescante elaborada con aguaje, una fruta típica de la Amazonía", "precio": 10},
-        {"bebida": "Chapo", "descripcion": "Refresco natural a base de plátano maduro, azúcar y canela", "precio": 9},
-        {"bebida": "Masato", "descripcion": "Bebida fermentada de yuca, tradicional en la Amazonía, con un sabor único", "precio": 12},
-        {"bebida": "Refresco de Camu Camu", "descripcion": "Bebida hecha con camu camu, rica en vitamina C, mezclada con agua", "precio": 9.5},
-        {"bebida": "Sorpresa Amazónica", "descripcion": "Mezcla de jugos de frutas amazónicas como guanábana y maracuyá", "precio": 11.5},
-        {"bebida": "Bebida de Castaña", "descripcion": "Refresco dulce elaborado con castaña y un toque de canela", "precio": 12},
-        {"bebida": "Jugo de Maracuyá", "descripcion": "Bebida refrescante elaborada con maracuyá", "precio": 10},
-        {"bebida": "Jugo de Huayo", "descripcion": "Bebida refrescante a base de huayo, dulce y aromática", "precio": 10},
-        {"bebida": "Refresco de Pitahaya", "descripcion": "Bebida hecha con jugo de pitahaya y un toque de limón", "precio": 12},
-        {"bebida": "Refresco de Carambola", "descripcion": "Bebida refrescante hecha con jugo de carambola", "precio": 10}
-    ]
+# Mostrar el menú con descripciones
+def display_menu(menu):
+    """Mostrar el menú con descripciones."""
+    menu_text = "Aquí está nuestra carta:\n"
+    for index, row in menu.iterrows():
+        menu_text += f"{row['Plato']}: {row['Descripción']} - {row['Precio']} soles\n"
+    return menu_text
 
-    st.subheader("Verificación de Bebidas")
-    selected_beverage = st.selectbox("Selecciona tu bebida", [b["bebida"] for b in bebidas])
-    
-    if st.button("Verificar Bebida"):
-        for bebida in bebidas:
-            if bebida["bebida"] == selected_beverage:
-                verification_beverage = {
-                    "verificacion": {
-                        "estado": "confirmado",
-                        "fecha": datetime.now().strftime("%Y-%m-%d"),
-                        "codigo_verificacion": "BEBIDA-001",
-                        "responsable": "Lila Huanca"
-                    },
-                    "bebida": bebida
-                }
-                # Guardar verificación en un archivo JSON
-                with open("verif.bebida.json", "w") as f:
-                    json.dump(verification_beverage, f)
-                st.success(f"Bebida verificada: {selected_beverage}")
-                break
+# Mostrar los distritos de reparto
+def display_distritos(distritos):
+    """Mostrar los distritos de reparto disponibles."""
+    distritos_text = "Los distritos de reparto son:\n"
+    for index, row in distritos.iterrows():
+        distritos_text += f"*{row['Distrito']}*\n"
+    return distritos_text
 
-    # Verificación de la carta
-    carta = [
-        {"plato": "Juane", "descripcion": "Arroz con pollo envuelto en hoja de bijao, acompañado de aceitunas y huevo", "precio": 25},
-        {"plato": "Inchicapi", "descripcion": "Sopa espesa a base de pollo, yuca y aguaje", "precio": 18},
-        {"plato": "Cecina", "descripcion": "Pechuga de pollo a la parrilla con salsa teriyaki y arroz", "precio": 20},
-        {"plato": "Sopa de Carachama", "descripcion": "Sopa hecha de pescado carachama, yuca y especias", "precio": 30},
-        {"plato": "Tacacho con cecina", "descripcion": "Puré de plátano con cecina", "precio": 20},
-        {"plato": "Patarashca", "descripcion": "Pescado asado envuelto en hoja de bijao con especias amazónicas", "precio": 35},
-        {"plato": "Paiche a la Parrilla", "descripcion": "Filete de paiche a la parrilla con ensalada y arroz", "precio": 40},
-        {"plato": "Chaufa Amazónico", "descripcion": "Arroz chaufa con cecina, chorizo regional y plátano maduro", "precio": 50.5},
-        {"plato": "Inchicapi con Paiche", "descripcion": "Variante del inchicapi tradicional, pero con filete de paiche", "precio": 38.5},
-        {"plato": "Purtumute", "descripcion": "Estofado de frijoles y maíz, acompañado de carne de res o cerdo", "precio": 25}
-    ]
+def display_postre(postre):
+    """Mostrar el menú con descripciones."""
+    postre_text = "Aquí está lista de postres:\n"
+    for index, row in postre.iterrows():
+        postre_text += f"{row['Postres']}: {row['Descripción']} - {row['Precio']} soles\n"
+    return postre_text
 
-    st.subheader("Verificación de la Carta")
-    selected_plate = st.selectbox("Selecciona un plato", [c["plato"] for c in carta])
-    
-    if st.button("Verificar Plato"):
-        for plato in carta:
-            if plato["plato"] == selected_plate:
-                verification_plate = {
-                    "verificacion": {
-                        "estado": "confirmado",
-                        "fecha": datetime.now().strftime("%Y-%m-%d"),
-                        "codigo_verificacion": "PLATO-001",
-                        "responsable": "Lila Huanca"
-                    },
-                    "plato": plato
-                }
-                # Guardar verificación en un archivo JSON
-                with open("verif.carta.json", "w") as
-
-    # Cargar el menú y los distritos
-    menu = load("carta.csv")
-    district = load_district("distrito.csv")
-    bebidas= load("Bebidas.csv")
-    postres= load("Postres.csv")
-
-    # Función para mostrar el menú en un formato amigable
-    def format_menu(menu):
-        if menu.empty:
-            return "No hay platos disponibles."
+def display_bebida(bebida):
+    """Mostrar el menú con descripciones."""
+    bebida_text = "Aquí está lista de bebidas:\n"
+    for index, row in bebida.iterrows():
+        bebida_text += f"{row['bebida']}: {row['descripcion']} - {row['precio']} soles\n"
+    return bebida_text
+		
+# Cargar el menú y distritos
+menu = load("carta.csv")
+distritos = load("distritos.csv")
+bebidas= load("Bebidas.csv")
+postres= load("Postres.csv")
 
 def display_confirmed_order(order_details):
     """Genera una tabla en formato Markdown para el pedido confirmado."""
@@ -187,49 +102,6 @@ def display_confirmed_order(order_details):
         table += f"| {item['Plato']} | {item['Cantidad']} | S/{item['Precio Total']:.2f} |\n"
     table += "| **Total** |              | **S/ {:.2f}**      |\n".format(sum(item['Precio Total'] for item in order_details))
     return table
-
-
-
-
-# Ajustar el tono del bot
-def adjust_tone(tone="friendly"):
-    """Ajustar el tono del bot según las preferencias del cliente."""
-    if tone == "formal":
-        st.session_state["tone"] = "formal"
-        return "Eres un asistente formal y educado."
-    else:
-        st.session_state["tone"] = "friendly"
-        return "Eres un asistente amigable y relajado."
-
-        
-initial_state = [
-    {"role": "system", "content": get_system_prompt(menu,distritos)},
-    {
-        "role": "assistant",
-        "content": f"¡Hola! Aquí te brindo nuestro menú del día, con que deleite quieres iniciar hoy? \n\n{format_menu(menu)}\n\n¿Qué platillo te parece más apetitoso?",
-    },
-]
-
-
-if "messages" not in st.session_state:
-    st.session_state["messages"] = deepcopy(initial_state)
-
-
-if st.sidebar.button("Reiniciar"):
-    st.session_state["messages"] = deepcopy(initial_state)
-st.sidebar.image("https://img.freepik.com/fotos-premium/horizonte-puesta-sol-vision-panoramica-seul-corea-sur-encanto-nocturno-papel-pared-movil-vertical_892776-27123.jpg", use_column_width=True)  # Ajusta el tamaño según necesites
-
-
-
-
-
-    # Mostrar el historial de la conversación
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"], avatar="🍃" if message["role"] == "assistant" else "👤"):
-            st.markdown(message["content"])
-
-    # Entrada del usuario
-    user_input = st.chat_input("Escribe aquí...")
 
 ##Pendiente
 
@@ -376,6 +248,7 @@ def generate_response(prompt, temperature=0,max_tokens=1000):
     #st.markdown(type(order_json))
     logging.info(json.dumps(order_json, indent=4) if order_json else '{}')
     return response
+
 # Función para verificar contenido inapropiado
 def check_for_inappropriate_content(prompt):
     """Verifica si el prompt contiene contenido inapropiado utilizando la API de Moderación de OpenAI."""
@@ -392,36 +265,58 @@ def check_for_inappropriate_content(prompt):
             return False
     except Exception as e:
         logging.error(f"Error al llamar a la API de Moderación: {e}")
-        return False  
+        return False
+	
+# Ajustar el tono del bot
+def adjust_tone(tone="friendly"):
+    """Ajustar el tono del bot según las preferencias del cliente."""
+    if tone == "formal":
+        st.session_state["tone"] = "formal"
+        return "Eres un asistente formal y educado."
+    else:
+        st.session_state["tone"] = "friendly"
+        return "Eres un asistente amigable y relajado."
+
+        
+initial_state = [
+    {"role": "system", "content": get_system_prompt(menu,distritos)},
+    {
+        "role": "assistant",
+        "content": f"¡Hola! Aquí te brindo nuestro menú del día, con que deleite quieres iniciar hoy? \n\n{format_menu(menu)}\n\n¿Qué platillo te parece más apetitoso?",
+    },
+]
 
 
+if "messages" not in st.session_state:
+    st.session_state["messages"] = deepcopy(initial_state)
 
- # Mostrar la respuesta del asistente
-    if user_input:
-        with st.chat_message("assistant", avatar="🍃"):
-            response_html = f"<p style='color: white;'>{response}</p>"
-            st.markdown(response_html, unsafe_allow_html=True)
 
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        st.session_state.messages.append({"role": "assistant", "content": response})
+if st.sidebar.button("Reiniciar"):
+    st.session_state["messages"] = deepcopy(initial_state)
 
-elif choice == "Reclamos":
-    # Manejo de reclamos
-    st.markdown("""
-        <h2 style='color: black;'>Deja tu Reclamo</h2> 
-    """, unsafe_allow_html=True)
+# Corrige la línea de la imagen
+st.sidebar.image("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/La%20Canooa.jpg")  # Ajusta el tamaño según necesites
 
-    complaint = st.text_area("Escribe tu reclamo aquí...")
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    if message["role"] == "system":
+        continue
+    elif message["role"] == "assistant":
+        with st.chat_message(message["role"], avatar="🌸"):
+            st.markdown(message["content"])
+    else:
+        with st.chat_message(message["role"], avatar="♨️"):
+            st.markdown(message["content"])
 
-    if st.button("Enviar Reclamo"):
-        if complaint:
-            response = "Tu reclamo está en proceso. Te devolveremos tu dinero en una hora al verificar la información. Si tu pedido no llegó a tiempo o fue diferente a lo que pediste, también te ofreceremos cupones por la mala experiencia de tu pedido."
-            st.success(response)
-            response_html = f"<p style='color: black;'>{response}</p>"
-            st.markdown(response_html, unsafe_allow_html=True)
-        else:
-            st.error("Por favor, escribe tu reclamo antes de enviarlo.")
-
-# Agregar mensaje de despedida en la parte inferior
-st.markdown("---")
-st.markdown("¡Gracias por visitar La Canoa Amazónica! 🌿🍽️")
+if prompt := st.chat_input():
+    # Verificar si el contenido es inapropiado
+    if check_for_inappropriate_content(prompt):
+        with st.chat_message("assistant", avatar="🌸"):
+            st.markdown("Por favor, mantengamos la conversación respetuosa.")
+		
+    else:
+        with st.chat_message("user", avatar="♨️"):
+            st.markdown(prompt)
+        output = generate_response(prompt)
+        with st.chat_message("assistant", avatar="🌸"):
+            st.markdown(output)
