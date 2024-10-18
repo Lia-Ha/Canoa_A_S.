@@ -1,3 +1,60 @@
 {
-  "verificacion": "confirmado"
+    "verificacion": {
+        "estado": "confirmado",
+        "fecha": "2024-10-18",
+        "codigo_verificacion": "CANOA-001",
+        "responsable": "Lila Huanca"
+    },
+    "carta": [
+        {
+            "Plato": "Juane",
+            "Descripción": "Arroz con pollo envuelto en hoja de bijao, acompañado de aceitunas y huevo",
+            "Precio": 25
+        },
+        {
+            "Plato": "Inchicapi",
+            "Descripción": "Sopa espesa a base de pollo, yuca y aguaje",
+            "Precio": 18
+        },
+        {
+            "Plato": "Cecina",
+            "Descripción": "Pechuga de pollo a la parrilla con salsa teriyaki y arroz",
+            "Precio": 20
+        },
+        {
+            "Plato": "Sopa de Carachama",
+            "Descripción": "Sopa hecha de pescado carachama, yuca y especias",
+            "Precio": 30
+        },
+        {
+            "Plato": "Tacacho con cecina",
+            "Descripción": "Puré de plátano con cecina",
+            "Precio": 20
+        },
+        {
+            "Plato": "Patarashca",
+            "Descripción": "Pescado asado envuelto en hoja de bijao con especias amazónicas",
+            "Precio": 35
+        },
+        {
+            "Plato": "Paiche a la Parrilla",
+            "Descripción": "Filete de paiche a la parrilla con ensalada y arroz",
+            "Precio": 40
+        },
+        {
+            "Plato": "Chaufa Amazónico",
+            "Descripción": "Arroz chaufa con cecina, chorizo regional y plátano maduro",
+            "Precio": 50.5
+        },
+        {
+            "Plato": "Inchicapi con Paiche",
+            "Descripción": "Variante del inchicapi tradicional, pero con filete de paiche",
+            "Precio": 38.5
+        },
+        {
+            "Plato": "Purtumute",
+            "Descripción": "Estofado de frijoles y maíz, acompañado de carne de res o cerdo",
+            "Precio": 25
+        }
+    ]
 }
