@@ -1,1 +1,61 @@
+{
+    "verificacion": {
+        "estado": "confirmado",
+        "fecha": "2024-10-18",
+        "codigo_verificacion": "POSTRE-001",
+        "responsable": "Lila Huanca"
+    },
+    "postres": [
+        {
+            "Postre": "Dulce de Cocona",
+            "Descripción": "Cocona caramelizada con un toque de limón y especias amazónicas",
+            "Precio": 12.5
+        },
+        {
+            "Postre": "Mazamorra de Chonta",
+            "Descripción": "Postre cremoso a base de chonta (palmito) con canela y clavo",
+            "Precio": 12
+        },
+        {
+            "Postre": "Pastel de Plátano",
+            "Descripción": "Pastel suave de plátano maduro con nueces y cobertura de chocolate",
+            "Precio": 8.5
+        },
+        {
+            "Postre": "Gelatina de Frutas Amazónicas",
+            "Descripción": "Gelatina fresca hecha con una mezcla de frutas típicas de la Amazonía",
+            "Precio": 9.5
+        },
+        {
+            "Postre": "Anmitsu",
+            "Descripción": "Postre japonés de gelatina de frutas y pasta dulce",
+            "Precio": 19.5
+        },
+        {
+            "Postre": "Trufas de Cacao Amazónico",
+            "Descripción": "Trufas de chocolate oscuro con cacao nativo y un toque de sal marina",
+            "Precio": 16
+        },
+        {
+            "Postre": "Galletas de Suri",
+            "Descripción": "Galletas crujientes elaboradas con harina de yuca y trozos de suri",
+            "Precio": 13.5
+        },
+        {
+            "Postre": "Flan de Camu Camu",
+            "Descripción": "Flan cremoso elaborado con jugo de camu camu, con un sabor único",
+            "Precio": 14
+        },
+        {
+            "Postre": "Galletas de Castaña",
+            "Descripción": "Galletas crujientes hechas con harina de castaña, ideales para acompañar café",
+            "Precio": 10
+        },
+        {
+            "Postre": "Pudín de Yuca",
+            "Descripción": "Pudín cremoso de yuca con canela y nuez moscada, servido frío",
+            "Precio": 12
+        }
+    ]
+}
 
