@@ -59,6 +59,7 @@ st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", us
 # Menú lateral
 menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu)
+
 if choice == "La Canoa Amazónica":
     # Mensaje de bienvenida en HTML con estilo
     welcome_message = """
