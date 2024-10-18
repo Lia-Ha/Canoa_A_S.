@@ -26,7 +26,6 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #4CAF50; /* Cambia esto por el color de fondo verde deseado */
         background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/image.jpg");
         background-size: cover;
         background-position: center;
