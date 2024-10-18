@@ -27,9 +27,6 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #4CAF50; /* Color de fondo verde */
-        color: white;  /* Cambiar el color del texto si es necesario */
-    }
         background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/image.jpg");
         background-size: cover;
         background-position: center;
