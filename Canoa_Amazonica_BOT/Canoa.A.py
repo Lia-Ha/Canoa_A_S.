@@ -65,14 +65,7 @@ st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", us
 url_Restaurante_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Fondo_Restaur.jpg"
 
 # Mostrar imágenes en la barra lateral debajo del menú
-st.sidebar.image(url_Restaurante_comida, caption="Siente la naturaleza", use_column_width=True)
-
-# URLs de las imágenes
-url_Restaurante_Local = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/Restaurante_la_canoa.JPG"
-
-# Mostrar imágenes en la barra lateral
-st.sidebar.image(url_Restaurante_Local, caption="Cada viaje es una nueva historia por contar. Por eso cuentas con nosotros, para nuevas experiencias", use_column_width=True)
-
+st.sidebar.image(url_Restaurante_comida, caption="Cada viaje es una nueva historia por contar. Por eso cuentas con nosotros, para nuevas experiencias", use_column_width=True)
 
 if choice == "La Canoa Amazónica":
     # Mensaje de bienvenida en HTML con estilo
