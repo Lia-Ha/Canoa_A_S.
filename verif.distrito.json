@@ -1,1 +1,25 @@
-
+{
+    "verificacion": {
+        "estado": "confirmado",
+        "fecha": "2024-10-18",
+        "codigo_verificacion": "DISTRITO-001",
+        "responsable": "Lila Huanca"
+    },
+    "distritos": [
+        "Miraflores",
+        "San Isidro",
+        "Barranco",
+        "La Molina",
+        "Surco",
+        "San Borja",
+        "Pueblo Libre",
+        "Lince",
+        "Chorrillos",
+        "San Miguel",
+        "Magdalena del Mar",
+        "Callao",
+        "Rímac",
+        "Carabayllo",
+        "Villa El Salvador"
+    ]
+}
