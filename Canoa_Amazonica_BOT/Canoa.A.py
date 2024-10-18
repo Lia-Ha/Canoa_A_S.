@@ -26,7 +26,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url('https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/image.jpg');
+        background-image: url('https://github.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/image.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -51,7 +51,7 @@ st.markdown(
 st.markdown("<div class='overlay'></div>", unsafe_allow_html=True)
 
 # URLs de las imágenes
-url_chica_comida = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/La%20Canoaa.jpg"
+url_chica_comida = "https://github.com/Lia-Ha/Canoa_A_S./blob/main/Canoa_Amazonica_BOT/La%20Canoaa.jpg"
 
 # Mostrar imágenes en la barra lateral
 st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", use_column_width=True)
@@ -59,7 +59,6 @@ st.sidebar.image(url_chica_comida, caption="Deliciosos Manjares de la Selva", us
 # Menú lateral
 menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu)
-
 if choice == "La Canoa Amazónica":
     # Mensaje de bienvenida en HTML con estilo
     welcome_message = """
@@ -189,4 +188,64 @@ elif choice == "Pedidos":
 
     # Mostrar el historial de la conversación
     for message in st.session_state.messages:
-        with st.chat_message(message
+        with st.chat_message(message["role"], avatar="🍃" if message["role"] == "assistant" else "👤"):
+            st.markdown(message["content"])
+
+    # Entrada del usuario
+    user_input = st.chat_input("Escribe aquí...")
+
+    # Procesar la conversación
+    if not st.session_state["order_placed"]:
+        if user_input:
+            order_dict = improved_extract_order_and_quantity(user_input, menu)
+            if not order_dict:
+                response = "😊 ¡Selecciona un plato de la selva! Escribe la cantidad seguida del plato.\n\n"
+                response += format_menu(menu)
+            else:
+                available_orders, unavailable_orders = verify_order_with_menu(order_dict, menu)
+                if unavailable_orders:
+                    response = f"Lo siento, los siguientes platos no están disponibles: {', '.join(unavailable_orders)}."
+                else:
+                    st.session_state["order_placed"] = True
+                    st.session_state["current_order"] = available_orders
+                    response = f"<p style='color: white;'>Tu pedido ha sido registrado: {', '.join([f'{qty} x {dish}' for dish, qty in available_orders.items()])}. ¿De qué distrito nos visitas? Por favor, menciona tu distrito (por ejemplo: Miraflores).</p>"
+    else:
+        if user_input:
+            district = verify_district(user_input, districts)
+            if not district:
+                response = f"Lo siento, pero no entregamos en ese distrito. Distritos disponibles: {', '.join(districts['Distrito'].tolist())}."
+            else:
+                st.session_state["district_selected"] = True
+                st.session_state["current_district"] = district
+                save_order_to_csv(st.session_state["current_order"], district)
+                response = f"Gracias por tu pedido desde **{district}**. ¡Tu pedido ha sido registrado con éxito! 🍽️"
+
+    # Mostrar la respuesta del asistente
+    if user_input:
+        with st.chat_message("assistant", avatar="🍃"):
+            response_html = f"<p style='color: white;'>{response}</p>"
+            st.markdown(response_html, unsafe_allow_html=True)
+
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+elif choice == "Reclamos":
+    # Manejo de reclamos
+    st.markdown("""
+        <h2 style='color: white;'>Deja tu Reclamo</h2> 
+    """, unsafe_allow_html=True)
+
+    complaint = st.text_area("Escribe tu reclamo aquí...")
+
+    if st.button("Enviar Reclamo"):
+        if complaint:
+            response = "Tu reclamo está en proceso. Te devolveremos tu dinero en una hora al verificar la información. Si tu pedido no llegó a tiempo o fue diferente a lo que pediste, también te ofreceremos cupones por la mala experiencia de tu pedido."
+            st.success(response)
+            response_html = f"<p style='color: white;'>{response}</p>"
+            st.markdown(response_html, unsafe_allow_html=True)
+        else:
+            st.error("Por favor, escribe tu reclamo antes de enviarlo.")
+
+# Agregar mensaje de despedida en la parte inferior
+st.markdown("---")
+st.markdown("¡Gracias por visitar La Canoa Amazónica! 🌿🍽️")
