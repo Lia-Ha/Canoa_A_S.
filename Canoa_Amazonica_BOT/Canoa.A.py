@@ -18,6 +18,8 @@ def init_session_state():
 
 init_session_state()
 
+import streamlit as st
+
 # Menú lateral
 menu = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu)
@@ -30,7 +32,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg (5).jpg");
+        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco_a.jpeg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -47,11 +49,10 @@ st.markdown(
         z-index: 1; /* Asegura que el superpuesto esté por encima de la imagen de fondo */
     }
     </style>
+    <div class="overlay"></div>
     """,
     unsafe_allow_html=True
 )
-
-
 
 # Mostrar imágenes en la barra lateral
 image_urls = {
