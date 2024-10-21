@@ -32,12 +32,31 @@ def format_menu(menu):
 
 # Cargar los archivos CSV desde GitHub
 menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/carta.csv"
-bebidas_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/bebidas.csv"
-postres_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/postre.csv"  # Corregido para cargar postres
+postre_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/bebida.csv"
+bebida_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/postre.csv"
 
 menu = load_from_url(menu_url)
-bebidas = load_from_url(bebidas_url)
-postre = load_from_url(postres_url)
+bebida = load_from_url(bebida_url)
+postre = load_from_url(postre_url)
+
+# Definir postres manualmente
+postres_data = {
+    "Plato": ["Dulce de Cocona", "Mazamorra de Chonta", "Pastel de Plátano", "Gelatina de Frutas Amazónicas", "Anmitsu", 
+              "Trufas de Cacao Amazónico", "Galletas de Suri", "Flan de Camu Camu", "Galletas de Castaña", "Pudín de Yuca"],
+    "Descripción": ["Cocona caramelizada con un toque de limón y especias amazónicas", 
+                    "Postre cremoso a base de chonta (palmito) con canela y clavo", 
+                    "Pastel suave de plátano maduro con nueces y cobertura de chocolate", 
+                    "Gelatina fresca hecha con una mezcla de frutas típicas de la Amazonía", 
+                    "Postre japonés de gelatina de frutas y pasta dulce", 
+                    "Trufas de chocolate oscuro con cacao nativo y un toque de sal marina", 
+                    "Galletas crujientes elaboradas con harina de yuca y trozos de suri", 
+                    "Flan cremoso elaborado con jugo de camu camu, con un sabor único", 
+                    "Galletas crujientes hechas con harina de castaña, ideales para acompañar café", 
+                    "Pudín cremoso de yuca con canela y nuez moscada, servido frío"],
+    "Precio": [12.5, 12, 8.5, 9.5, 19.5, 16, 13.5, 14, 10, 12]
+}
+
+postre = pd.DataFrame(postres_data)
 
 # Configuración de la página
 st.set_page_config(page_title="La Canoa Amazónica", page_icon=":canoe:")
