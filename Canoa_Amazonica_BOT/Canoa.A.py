@@ -31,12 +31,13 @@ def format_menu(menu):
     return table
 
 # Cargar los archivos CSV desde GitHub
-menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./blob/main/carta.csv"
-postres_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./blob/main/bebidas.csv"
-bebidas_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./blob/main/postre.csv"
+menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/carta.csv"
+postre_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/bebida.csv"
+bebida_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/postre.csv"
 
 menu = load_from_url(menu_url)
-bebidas = load_from_url(bebidas_url)
+bebida = load_from_url(bebida_url)
+postre = load_from_url(postre_url)
 
 # Definir postres manualmente
 postres_data = {
