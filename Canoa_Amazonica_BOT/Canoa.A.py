@@ -14,10 +14,16 @@ def init_session_state():
 
 # Función para cargar datos desde URL de CSV
 def load_from_url(url):
-    return pd.read_csv(url)
+    try:
+        return pd.read_csv(url)
+    except Exception as e:
+        st.error(f"Error al cargar los datos desde {url}: {e}")
+        return pd.DataFrame()
 
 # Formatear menú para visualización en tabla
 def format_menu(menu):
+    if menu.empty:
+        return "No hay datos disponibles."
     table = "| **Plato** | **Descripción** | **Precio** |\n"
     table += "|-----------|-----------------|-------------|\n"
     for idx, row in menu.iterrows():
@@ -25,12 +31,10 @@ def format_menu(menu):
     return table
 
 # Cargar los archivos CSV desde GitHub
-# Carta cvs
 menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/carta.csv"
-menu = load_from_url(menu_url)
-
-# Bebidas cvs
 bebidas_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/bebidas.csv"
+
+menu = load_from_url(menu_url)
 bebidas = load_from_url(bebidas_url)
 
 # Definir postres manualmente
@@ -75,7 +79,7 @@ if choice == "Pedidos":
     
     if pedido:
         resultados = process.extractOne(pedido, menu["Plato"], scorer=fuzz.token_sort_ratio)
-        if resultados[1] > 80:  # Coincidencia alta
+        if resultados and resultados[1] > 80:  # Coincidencia alta
             plato_seleccionado = resultados[0]
             cantidad = st.number_input(f"¿Cuántos {plato_seleccionado} deseas?", min_value=1, step=1)
             
@@ -93,7 +97,7 @@ if choice == "Pedidos":
                 
                 if postre_pedido:
                     postre_resultados = process.extractOne(postre_pedido, postre["Plato"], scorer=fuzz.token_sort_ratio)
-                    if postre_resultados[1] > 80:
+                    if postre_resultados and postre_resultados[1] > 80:
                         postre_seleccionado = postre_resultados[0]
                         cantidad_postre = st.number_input(f"¿Cuántos {postre_seleccionado} deseas?", min_value=1, step=1)
                         
@@ -108,15 +112,19 @@ if choice == "Pedidos":
             pedido_resumen = "| **Plato** | **Cantidad** | **Precio** |\n"
             pedido_resumen += "|-----------|-------------|-------------|\n"
             for item, cantidad in st.session_state["current_order"]:
-                if item in menu["Plato"].values:
-                    precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
-                elif item in bebidas["Plato"].values:
-                    precio = bebidas.loc[bebidas['Plato'] == item, 'Precio'].values[0]
-                elif item in postre["Plato"].values:
-                    precio = postre.loc[postre['Plato'] == item, 'Precio'].values[0]
-                
-                pedido_resumen += f"| {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
-                total += precio * cantidad
+                try:
+                    if item in menu["Plato"].values:
+                        precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
+                    elif item in bebidas["Plato"].values:
+                        precio = bebidas.loc[bebidas['Plato'] == item, 'Precio'].values[0]
+                    elif item in postre["Plato"].values:
+                        precio = postre.loc[postre['Plato'] == item, 'Precio'].values[0]
+                    else:
+                        raise KeyError(f"El ítem {item} no se encuentra en el menú.")
+                    pedido_resumen += f"| {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
+                    total += precio * cantidad
+                except KeyError as e:
+                    st.error(f"Error: {e}")
             st.markdown(pedido_resumen, unsafe_allow_html=True)
             st.markdown(f"**Total a pagar: S/{total:.2f}**")
 
