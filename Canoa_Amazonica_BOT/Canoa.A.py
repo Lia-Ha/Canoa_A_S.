@@ -6,8 +6,7 @@ from fuzzywuzzy import fuzz, process
 def init_session_state():
     session_defaults = {
         "order_placed": False,
-        "current_order": [],
-        "messages": []
+        "current_order": []
     }
     for key, default in session_defaults.items():
         if key not in st.session_state:
@@ -27,40 +26,22 @@ def format_menu(menu):
 
 # Cargar los archivos CSV desde GitHub
 menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/carta.csv"
-postres_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Postre.csv"
-bebidas_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Bebidas.csv"
-distritos_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/distrito.csv"
-
 menu = load_from_url(menu_url)
-postres = load_from_url(postres_url)
-bebidas = load_from_url(bebidas_url)
-distritos = load_from_url(distritos_url)
 
 # Configuración de la página
 st.set_page_config(page_title="La Canoa Amazónica", page_icon=":canoe:")
 init_session_state()
 
 # Menú lateral
-menu_opciones = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
+menu_opciones = ["Pedidos", "Ofertas", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu_opciones)
 
-if choice == "La Canoa Amazónica":
-    st.markdown("<h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica!</h2>", unsafe_allow_html=True)
-    
-    # Mostrar carta completa
+if choice == "Pedidos":
+    st.markdown("<h2>¡Bienvenidos a La Canoa Amazónica!</h2>", unsafe_allow_html=True)
     st.markdown("### Carta de Platos")
     st.markdown(format_menu(menu), unsafe_allow_html=True)
-    
-    st.markdown("### Bebidas")
-    st.markdown(format_menu(bebidas), unsafe_allow_html=True)
-    
-    st.markdown("### Postres")
-    st.markdown(format_menu(postres), unsafe_allow_html=True)
 
-elif choice == "Pedidos":
-    st.markdown("### Realiza tu pedido aquí:")
-
-    # Preguntar por el pedido
+    # Solicitar el pedido del usuario
     pedido = st.text_input("¿Qué plato deseas pedir?")
     
     if pedido:
@@ -73,29 +54,25 @@ elif choice == "Pedidos":
                 st.session_state["current_order"].append((plato_seleccionado, cantidad))
                 st.success(f"{cantidad} {plato_seleccionado} añadido(s) al pedido.")
         
-        # Consultar si desea añadir más
+        # Mostrar resumen del pedido
         if st.session_state["current_order"]:
-            if st.checkbox("¿Deseas añadir algún postre o bebida?"):
-                seleccion_postre = st.selectbox("Selecciona un postre:", postres["Plato"])
-                if st.button("Añadir postre"):
-                    st.session_state["current_order"].append((seleccion_postre, 1))
-                    st.success(f"{seleccion_postre} añadido al pedido.")
-            
-    # Mostrar resumen del pedido
-    if st.session_state["current_order"]:
-        st.markdown("### Resumen de tu pedido:")
-        total = 0
-        pedido_resumen = "| **Plato** | **Cantidad** | **Precio** |\n"
-        pedido_resumen += "|-----------|-------------|-------------|\n"
-        for item, cantidad in st.session_state["current_order"]:
-            precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
-            pedido_resumen += f"| {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
-            total += precio * cantidad
-        st.markdown(pedido_resumen, unsafe_allow_html=True)
-        st.markdown(f"**Total a pagar: S/{total:.2f}**")
+            st.markdown("### Resumen de tu pedido:")
+            total = 0
+            pedido_resumen = "| **Plato** | **Cantidad** | **Precio** |\n"
+            pedido_resumen += "|-----------|-------------|-------------|\n"
+            for item, cantidad in st.session_state["current_order"]:
+                precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
+                pedido_resumen += f"| {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
+                total += precio * cantidad
+            st.markdown(pedido_resumen, unsafe_allow_html=True)
+            st.markdown(f"**Total a pagar: S/{total:.2f}**")
+
+elif choice == "Ofertas":
+    st.markdown("### Promociones del día:")
+    st.markdown("**3 juanes por S/70 + chicha morada gratis**")
 
 elif choice == "Reclamos":
-    st.markdown("### Deja tu reclamo aquí:")
+    st.markdown("<h2>Deja tu reclamo aquí:</h2>", unsafe_allow_html=True)
     reclamo = st.text_area("Escribe tu reclamo...")
     if st.button("Enviar Reclamo"):
         if reclamo:
