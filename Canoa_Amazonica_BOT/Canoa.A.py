@@ -1,75 +1,49 @@
 import pandas as pd
 import streamlit as st
-from datetime import datetime
 from fuzzywuzzy import fuzz, process
-import re
 
 # Inicializar claves en session_state
 def init_session_state():
     session_defaults = {
         "order_placed": False,
-        "district_selected": False,
-        "current_district": None,
+        "current_order": [],
         "messages": []
     }
     for key, default in session_defaults.items():
         if key not in st.session_state:
             st.session_state[key] = default
 
-# Configuración inicial de la página
-st.set_page_config(page_title="La Canoa Amazónica!", page_icon=":canoe:")
+# Función para cargar datos desde URL de CSV
+def load_from_url(url):
+    return pd.read_csv(url)
 
-# Menú lateral
-menu_opciones = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
-choice = st.sidebar.selectbox("Menú", menu_opciones)
-
-# Estilo para la imagen de fondo
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url("https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Canoa_Amazonica_BOT/assets/images/_Barco.a.jpeg%20(5).jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        color: white;
-    }
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1;
-    }
-    </style>
-    <div class="overlay"></div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Función para cargar datos desde CSV
-def load(file_path):
-    return pd.read_csv(file_path)
-
-# Función para formatear el menú en una tabla
+# Formatear menú para visualización en tabla
 def format_menu(menu):
-    if menu.empty:
-        return "No hay platos disponibles."
     table = "| **Plato** | **Descripción** | **Precio** |\n"
     table += "|-----------|-----------------|-------------|\n"
     for idx, row in menu.iterrows():
         table += f"| {row['Plato']} | {row['Descripción']} | S/{row['Precio']:.2f} |\n"
     return table
 
-# Cargar los archivos CSV de la carta, distritos, bebidas y postres
-menu = load("carta.csv")
-distritos = load("distritos.csv")
-bebidas = load("Bebidas.csv")
-postres = load("Postres.csv")
+# Cargar los archivos CSV desde GitHub
+menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/carta.csv"
+postres_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Postre.csv"
+bebidas_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/Bebidas.csv"
+distritos_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/distrito.csv"
 
-# Mostrar las opciones de menú
+menu = load_from_url(menu_url)
+postres = load_from_url(postres_url)
+bebidas = load_from_url(bebidas_url)
+distritos = load_from_url(distritos_url)
+
+# Configuración de la página
+st.set_page_config(page_title="La Canoa Amazónica", page_icon=":canoe:")
+init_session_state()
+
+# Menú lateral
+menu_opciones = ["La Canoa Amazónica", "Ofertas", "Pedidos", "Reclamos"]
+choice = st.sidebar.selectbox("Menú", menu_opciones)
+
 if choice == "La Canoa Amazónica":
     st.markdown("<h2 style='color: white;'>¡Bienvenidos a La Canoa Amazónica!</h2>", unsafe_allow_html=True)
     
@@ -83,20 +57,49 @@ if choice == "La Canoa Amazónica":
     st.markdown("### Postres")
     st.markdown(format_menu(postres), unsafe_allow_html=True)
 
-elif choice == "Ofertas":
-    st.markdown("### Promociones del día:")
-    st.markdown("**3 juanes por S/70 + chicha morada gratis**")
-    
 elif choice == "Pedidos":
     st.markdown("### Realiza tu pedido aquí:")
+
+    # Preguntar por el pedido
+    pedido = st.text_input("¿Qué plato deseas pedir?")
     
-    # Aquí puedes agregar la funcionalidad de chat y pedidos.
-    
+    if pedido:
+        resultados = process.extractOne(pedido, menu["Plato"], scorer=fuzz.token_sort_ratio)
+        if resultados[1] > 80:  # Coincidencia alta
+            plato_seleccionado = resultados[0]
+            cantidad = st.number_input(f"¿Cuántos {plato_seleccionado} deseas?", min_value=1, step=1)
+            
+            if st.button("Añadir al pedido"):
+                st.session_state["current_order"].append((plato_seleccionado, cantidad))
+                st.success(f"{cantidad} {plato_seleccionado} añadido(s) al pedido.")
+        
+        # Consultar si desea añadir más
+        if st.session_state["current_order"]:
+            if st.checkbox("¿Deseas añadir algún postre o bebida?"):
+                seleccion_postre = st.selectbox("Selecciona un postre:", postres["Plato"])
+                if st.button("Añadir postre"):
+                    st.session_state["current_order"].append((seleccion_postre, 1))
+                    st.success(f"{seleccion_postre} añadido al pedido.")
+            
+    # Mostrar resumen del pedido
+    if st.session_state["current_order"]:
+        st.markdown("### Resumen de tu pedido:")
+        total = 0
+        pedido_resumen = "| **Plato** | **Cantidad** | **Precio** |\n"
+        pedido_resumen += "|-----------|-------------|-------------|\n"
+        for item, cantidad in st.session_state["current_order"]:
+            precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
+            pedido_resumen += f"| {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
+            total += precio * cantidad
+        st.markdown(pedido_resumen, unsafe_allow_html=True)
+        st.markdown(f"**Total a pagar: S/{total:.2f}**")
+
 elif choice == "Reclamos":
-    st.markdown("<h2 style='color: white;'>Deja tu reclamo aquí:</h2>", unsafe_allow_html=True)
-    complaint = st.text_area("Escribe tu reclamo...")
+    st.markdown("### Deja tu reclamo aquí:")
+    reclamo = st.text_area("Escribe tu reclamo...")
     if st.button("Enviar Reclamo"):
-        if complaint:
+        if reclamo:
             st.success("Tu reclamo ha sido enviado.")
         else:
             st.error("Por favor, escribe tu reclamo antes de enviarlo.")
+
