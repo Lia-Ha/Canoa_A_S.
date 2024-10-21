@@ -36,6 +36,11 @@ init_session_state()
 menu_opciones = ["Pedidos", "Ofertas", "Reclamos"]
 choice = st.sidebar.selectbox("Menú", menu_opciones)
 
+# Añadir botón de reinicio en la barra lateral
+if st.sidebar.button("Reiniciar pedido"):
+    st.session_state["current_order"] = []
+    st.success("Pedido reiniciado.")
+
 if choice == "Pedidos":
     st.markdown("<h2>¡Bienvenidos a La Canoa Amazónica!</h2>", unsafe_allow_html=True)
     st.markdown("### Carta de Platos")
@@ -79,4 +84,3 @@ elif choice == "Reclamos":
             st.success("Tu reclamo ha sido enviado.")
         else:
             st.error("Por favor, escribe tu reclamo antes de enviarlo.")
-
