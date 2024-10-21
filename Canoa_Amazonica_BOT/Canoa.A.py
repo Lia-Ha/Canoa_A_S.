@@ -25,8 +25,17 @@ def format_menu(menu):
     return table
 
 # Cargar los archivos CSV desde GitHub
+# Carta cvs
 menu_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/carta.csv"
 menu = load_from_url(menu_url)
+
+# Bebidas cvs
+bebidas_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/bebidas.csv"
+bebidas = load_from_url(bebidas_url)
+
+# Postres cvs
+postre_url = "https://raw.githubusercontent.com/Lia-Ha/Canoa_A_S./main/postre.csv"
+postre = load_from_url(postre_url) 
 
 # Configuración de la página
 st.set_page_config(page_title="La Canoa Amazónica", page_icon=":canoe:")
