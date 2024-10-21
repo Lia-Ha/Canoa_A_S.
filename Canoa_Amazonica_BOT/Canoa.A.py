@@ -105,28 +105,34 @@ if choice == "Pedidos":
                             st.session_state["current_order"].append((postre_seleccionado, cantidad_postre))
                             st.success(f"{cantidad_postre} {postre_seleccionado} añadido(s) al pedido.")
         
-        # Mostrar resumen del pedido
-        if st.session_state["current_order"]:
-            st.markdown("### Resumen de tu pedido:")
-            total = 0
-            pedido_resumen = "| **Plato** | **Cantidad** | **Precio** |\n"
-            pedido_resumen += "|-----------|-------------|-------------|\n"
-            for item, cantidad in st.session_state["current_order"]:
-                try:
-                    if item in menu["Plato"].values:
-                        precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
-                    elif item in bebidas["Plato"].values:
-                        precio = bebidas.loc[bebidas['Plato'] == item, 'Precio'].values[0]
-                    elif item in postre["Plato"].values:
-                        precio = postre.loc[postre['Plato'] == item, 'Precio'].values[0]
-                    else:
-                        raise KeyError(f"El ítem {item} no se encuentra en el menú.")
-                    pedido_resumen += f"| {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
-                    total += precio * cantidad
-                except KeyError as e:
-                    st.error(f"Error: {e}")
-            st.markdown(pedido_resumen, unsafe_allow_html=True)
-            st.markdown(f"**Total a pagar: S/{total:.2f}**")
+# Mostrar resumen del pedido
+if st.session_state["current_order"]:
+    st.markdown("### Resumen de tu pedido:")
+    total = 0
+    pedido_resumen = "| **Plato** | **Postre** | **Cantidad** | **Precio** |\n"
+    pedido_resumen += "|-----------|-------------|-------------|-------------|\n"
+    
+    for item, cantidad in st.session_state["current_order"]:
+        try:
+            if item in menu["Plato"].values:
+                precio = menu.loc[menu['Plato'] == item, 'Precio'].values[0]
+                pedido_resumen += f"| {item} | - | {cantidad} | S/{precio * cantidad:.2f} |\n"
+                total += precio * cantidad
+            elif item in bebidas["Plato"].values:
+                precio = bebidas.loc[bebidas['Plato'] == item, 'Precio'].values[0]
+                pedido_resumen += f"| {item} | - | {cantidad} | S/{precio * cantidad:.2f} |\n"
+                total += precio * cantidad
+            elif item in postre["Plato"].values:
+                precio = postre.loc[postre['Plato'] == item, 'Precio'].values[0]
+                pedido_resumen += f"| - | {item} | {cantidad} | S/{precio * cantidad:.2f} |\n"
+                total += precio * cantidad
+            else:
+                raise KeyError(f"El ítem {item} no se encuentra en el menú.")
+        except KeyError as e:
+            st.error(f"Error: {e}")
+    
+    st.markdown(pedido_resumen, unsafe_allow_html=True)
+    st.markdown(f"**Total a pagar: S/{total:.2f}**")
 
 elif choice == "Ofertas":
     st.markdown("### Promociones del día:")
